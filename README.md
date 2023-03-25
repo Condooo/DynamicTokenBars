@@ -1,5 +1,5 @@
 # Dynamic Token Bars
-A simply Roll20 script to display or hide token bars depending on whether combat is active.
+A simple Roll20 script to display or hide token bars depending on whether combat is active.
 
 Token bar visibility is set depending on whether the turn tracker is open, updating as the turn tracker is opened or closed, or when players are moved to a new page, with the option to set/clear specific bars as permanently visible regardless of the turn tracker status.
 
