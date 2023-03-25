@@ -1,4 +1,6 @@
 var setTokenBars;
+var setPermanentBar;
+var clearSettings;
 
 on("ready", function () {
     "use strict";
@@ -7,7 +9,8 @@ on("ready", function () {
     if (!state.DynamicTokenBars) {
         state.DynamicTokenBars = {
             version: 0.1,
-            permanentBar: [false, false, false]
+            permanentBar: [false, false, false],
+            seeAll: false
         };
     }
 
@@ -22,9 +25,27 @@ on("ready", function () {
         // Set token bar visibility
         _.each(tokens, function (obj) {
             for (let i = 0; i < state.DynamicTokenBars.permanentBar.length; i++){
-                obj.set("playersedit_bar" + (i+1), state.DynamicTokenBars.permanentBar[i] || active);
+                var index = i+1;
+                var seeAllActive = (active || state.DynamicTokenBars.permanentBar[i]) && state.DynamicTokenBars.seeAll;
+                obj.set("showplayers_bar" + (index), (active || state.DynamicTokenBars.permanentBar[i]) && state.DynamicTokenBars.seeAll);
+                obj.set("playersedit_bar" + (index), active || state.DynamicTokenBars.permanentBar[i]);
             }
         })
+    }
+
+    setPermanentBar = function(index){
+        if (index >= 1 && index <= state.DynamicTokenBars.permanentBar.length) {
+            state.DynamicTokenBars.permanentBar[index-1] = !state.DynamicTokenBars.permanentBar[index-1];
+        }
+        setTokenBars(Campaign().get("initiativepage"));
+    }
+
+    clearSettings = function(){
+        for (let i = 0; i < state.DynamicTokenBars.permanentBar.length; i++){
+            state.DynamicTokenBars.permanentBar[i] = false;
+        }
+        state.DynamicTokenBars.seeAll = false;
+        setTokenBars(Campaign().get("initiativepage"));
     }
 })
 
@@ -43,21 +64,17 @@ on('chat:message', function (msg) {
         // Handle permanent bar status
         if (message.indexOf('--pb') === 0) {
             message = message.replace('--pb', '').trim();
-            var index = message;
-            if (index >= 1 && index <= state.DynamicTokenBars.permanentBar.length) {
-                state.DynamicTokenBars.permanentBar[index-1] = !state.DynamicTokenBars.permanentBar[index-1];
-            }
-            setTokenBars(Campaign().get("initiativepage"));
+            setPermanentBar(message);
             return;
         }
         // Clear all permanent bar status
         if (message.indexOf('--clear') === 0){
             message = message.replace('--clear', '').trim();
-            for (let i = 0; i < state.DynamicTokenBars.permanentBar.length; i++){
-                state.DynamicTokenBars.permanentBar[i] = false;
-            }
-            setTokenBars(Campaign().get("initiativepage"));
+            clearSettings();
             return;
+        }
+        if (message.indexOf('--seeall') === 0){
+            state.DynamicTokenBars.seeAll = !state.DynamicTokenBars.seeAll;
         }
     }
 });
