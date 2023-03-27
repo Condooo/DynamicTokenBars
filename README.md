@@ -11,5 +11,6 @@ Currently only sets visibility for players - token bars remain visible for GMs.
 * `!dtb --clear` Clear: Clear all permanently visible token bars and `See All` status, reverting to default behaviour.
 
 ## Version History
+* `0.2.1` Set token bars to update when `See All` is enabled/disabled
 * `0.2` Added ability to toggle `See All`
 * `0.1` Initial commit
