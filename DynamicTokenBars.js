@@ -26,8 +26,7 @@ on("ready", function () {
         _.each(tokens, function (obj) {
             for (let i = 0; i < state.DynamicTokenBars.permanentBar.length; i++){
                 var index = i+1;
-                var seeAllActive = (active || state.DynamicTokenBars.permanentBar[i]) && state.DynamicTokenBars.seeAll;
-                obj.set("showplayers_bar" + (index), (active || state.DynamicTokenBars.permanentBar[i]) && state.DynamicTokenBars.seeAll);
+                obj.set("showplayers_bar" + (index), state.DynamicTokenBars.seeAll && (active || state.DynamicTokenBars.permanentBar[i]));
                 obj.set("playersedit_bar" + (index), active || state.DynamicTokenBars.permanentBar[i]);
             }
         })
@@ -75,6 +74,8 @@ on('chat:message', function (msg) {
         }
         if (message.indexOf('--seeall') === 0){
             state.DynamicTokenBars.seeAll = !state.DynamicTokenBars.seeAll;
+            setTokenBars(Campaign().get("initiativepage"));
+            return;
         }
     }
 });
