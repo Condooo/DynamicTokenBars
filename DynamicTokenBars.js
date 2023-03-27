@@ -8,7 +8,7 @@ on("ready", function () {
     // Check if the namespaced property exists, creating it if it doesn't
     if (!state.DynamicTokenBars) {
         state.DynamicTokenBars = {
-            version: 0.2,
+            version: 0.2.1,
             permanentBar: [false, false, false],
             seeAll: false
         };
